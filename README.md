@@ -28,8 +28,3 @@ Database: SQLlite
 
 Email Service: SMTP
 
-📷 Screenshots
-### 🧑‍💻 Chatbot Interface
-![Chatbot UI](chatbot ui.jfif)
-### Website UI
-![Website UI](website ui.jfif)
