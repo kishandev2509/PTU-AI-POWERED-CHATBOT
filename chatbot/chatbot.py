@@ -44,7 +44,7 @@ question_vectors = None
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 EMAIL_USERNAME = "vkviki0786@gmail.com"  # Replace with your Gmail address
-EMAIL_PASSWORD = "ghj jhf hjg bhj dsf"    # Replace with your Gmail App Password
+EMAIL_PASSWORD = "enter password here"    # Replace with your Gmail App Password
 SUPPORT_EMAIL = "support@ptu.ac.in"      # Replace with support email
 
 # List of admin emails
