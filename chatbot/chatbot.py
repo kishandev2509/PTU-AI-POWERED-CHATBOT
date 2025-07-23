@@ -47,8 +47,7 @@ EMAIL_USERNAME = "enter your email"  # Replace with your Gmail address
 EMAIL_PASSWORD = "enter password here"    # Replace with your Gmail App Password
 SUPPORT_EMAIL = "support@ptu.ac.in"      # Replace with support email
 
-# List of admin emails
-ADMIN_EMAILS = ['miss.vanshika.sharma.10@gmail.com', 'vkviki0786@gmail.com']  # Replace with your real admin emails
+
 
 # Try to load data files
 try:
