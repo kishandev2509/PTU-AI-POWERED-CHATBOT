@@ -71,22 +71,3 @@ class ChatBot:
         
         return "I apologize, but I'm having trouble understanding. Could you try asking in a different way?"
 
-def main():
-    chatbot = ChatBot()
-    print("Bot: Hello! I'm your PTU assistant. How can I help you today? (type 'quit' to exit)")
-    
-    while True:
-        user_input = input("You: ")
-        if user_input.lower() in ['quit', 'exit', 'bye']:
-            print("Bot: Goodbye! Have a great day!")
-            break
-            
-        try:
-            response = chatbot.get_response(user_input)
-            print(f"Bot: {response}")
-        except Exception as e:
-            logger.error(f"Error processing input: {e}")
-            print("Bot: I apologize, but I encountered an error. Could you try asking something else?")
-
-if __name__ == "__main__":
-    main() 
