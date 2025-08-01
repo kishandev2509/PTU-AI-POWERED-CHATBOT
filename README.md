@@ -28,3 +28,6 @@ Database: SQLlite
 
 Email Service: SMTP
 
+## 📊 Dashboard Preview
+
+![Dashboard Screenshot](website ui.jfif)
