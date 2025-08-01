@@ -29,5 +29,4 @@ Database: SQLlite
 Email Service: SMTP
 
 ## 📊 Dashboard Preview
-
-![Dashboard Screenshot](website-ui.jpg)
+![Dashboard Screenshot](website%20ui.jpg)
