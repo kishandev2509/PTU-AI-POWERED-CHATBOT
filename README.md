@@ -30,3 +30,6 @@ Email Service: SMTP
 
 ## 📊 Dashboard Preview
 ![Dashboard Screenshot](website%20ui.jpg)
+
+## 📊 Chatbot Dashboard Preview
+![Dashboard Screenshot](chatbot.jpg)
