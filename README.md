@@ -30,4 +30,4 @@ Email Service: SMTP
 
 ## 📊 Dashboard Preview
 
-![Dashboard Screenshot](website ui.jfif)
+![Dashboard Screenshot](website ui.jpg)
