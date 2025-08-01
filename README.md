@@ -32,4 +32,4 @@ Email Service: SMTP
 ![Dashboard Screenshot](website%20ui.jpg)
 
 ## 📊 Chatbot Dashboard Preview
-![Dashboard Screenshot](chatbot.jpg)
+![Dashboard Screenshot](chatbot1.jpg)
