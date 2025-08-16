@@ -552,3 +552,8 @@ def get_chat_history():
         return jsonify({'history': chat_list})
     except Exception as e:
         return jsonify({'history': [], 'error': str(e)})
+
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
+
