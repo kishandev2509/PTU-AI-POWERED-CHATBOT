@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def load_intents():
-    with open('dataset.csv', 'r') as f:
+    with open('data/dataset.csv', 'r') as f:
         # Skip header
         next(f)
         intents = {}
@@ -70,4 +70,5 @@ class ChatBot:
                 return random.choice(intent['responses'])
         
         return "I apologize, but I'm having trouble understanding. Could you try asking in a different way?"
+
 
