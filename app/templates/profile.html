@@ -1,0 +1,244 @@
+{% extends "base.html" %}{% block title %}My Profile{% endblock %}{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}" />{% endblock %}
+{% block content %}
+<div class="profile-container">
+  <!-- Profile Header -->
+  <div class="profile-header-section">
+    <div class="profile-cover">
+      <div class="profile-photo-container">
+        <div class="profile-photo-wrapper">
+          <img
+            src="{{ current_user.get_profile_photo_url() or 'https://ui-avatars.com/api/?name=' + current_user.username + '&background=random' }}"
+            alt="Profile Photo" class="profile-photo" id="profile-photo" />
+          <label for="profile-photo-upload" class="photo-upload-label">
+            <i class="bi bi-plus-circle-fill"></i>
+          </label>
+          <input type="file" class="profile-photo-upload d-none" accept="image/*" />
+        </div>
+      </div>
+      <div class="profile-header-info">
+        <h1>{{ current_user.full_name }}</h1>
+        <p class="student-info">{{ current_user.course }} • Semester {{ current_user.semester }}</p>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <i class="bi bi-calendar3"></i>
+            <span>Joined {{ current_user.created_at.strftime('%B %Y') }}</span>
+          </div>
+          <div class="stat-item">
+            <i class="bi bi-ticket-detailed"></i>
+            <span>{{ current_user.support_tickets|length }} Tickets</span>
+          </div>
+          <div class="stat-item">
+            <i class="bi bi-chat-dots"></i>
+            <span>Active Now</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="profile-content">
+    <div class="profile-sections">
+      <!-- Left Section -->
+      <div class="profile-main">
+        <div class="profile-card">
+          <div class="card-header">
+            <h3><i class="bi bi-person-badge"></i> Profile Information</h3>
+            <button class="edit-btn" onclick="toggleEdit()">
+              <i class="bi bi-pencil-square"></i> Edit Profile
+            </button>
+          </div>
+          <div class="card-body">
+            <form method="POST" id="profileForm">
+              {{ form.hidden_tag() }}
+              <div class="form-group-wrapper">
+                <div class="form-group">
+                  <label>
+                    <i class="bi bi-person"></i>
+                    Username
+                  </label>
+                  <input type="text" value="{{ current_user.username }}" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <i class="bi bi-envelope"></i>
+                    Email
+                  </label>
+                  <input type="email" name="email" value="{{ current_user.email }}" class="form-control" required
+                    disabled>
+                </div>
+              </div>
+
+              <div class="form-group-wrapper">
+                <div class="form-group">
+                  <label>
+                    <i class="bi bi-person-vcard"></i>
+                    Full Name
+                  </label>
+                  <input type="text" name="full_name" value="{{ current_user.full_name }}" class="form-control" required
+                    disabled>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <i class="bi bi-123"></i>
+                    Enrollment Number
+                  </label>
+                  <input type="text" name="enrollment_number" value="{{ current_user.enrollment_number }}"
+                    class="form-control" required disabled>
+                </div>
+              </div>
+
+              <div class="form-group-wrapper">
+                <div class="form-group">
+                  <label>
+                    <i class="bi bi-book"></i>
+                    Course
+                  </label>
+                  <select name="course" class="form-control" disabled>
+                    <option value="B.Tech" {% if current_user.course=='B.Tech' %}selected{% endif %}>B.Tech</option>
+                    <option value="M.Tech" {% if current_user.course=='M.Tech' %}selected{% endif %}>M.Tech</option>
+                    <option value="MCA" {% if current_user.course=='MCA' %}selected{% endif %}>MCA
+                    </option>
+                    <option value="BCA" {% if current_user.course=='BCA' %}selected{% endif %}>BCA
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <i class="bi bi-calendar3"></i>
+                    Semester
+                  </label>
+                  <select name="semester" class="form-control" disabled>
+                    {% for i in range(1, 9) %}
+                    <option value="{{ i }}" {% if current_user.semester==i|string %}selected{% endif %}>Semester {{ i }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>
+                  <i class="bi bi-key"></i>
+                  New Password
+                </label>
+                <div class="password-input">
+                  <input type="password" name="new_password" class="form-control"
+                    placeholder="Leave blank to keep current password" autocomplete="new-password" disabled>
+                  <button type="button" class="toggle-password" onclick="togglePassword(this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-actions" style="display: none;">
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-check-lg"></i> Save Changes
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="toggleEdit()">
+                  <i class="bi bi-x-lg"></i> Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section -->
+      <div class="profile-sidebar">
+        <!-- Quick Stats -->
+        <div class="profile-card">
+          <div class="card-header">
+            <h3><i class="bi bi-graph-up"></i> Quick Stats</h3>
+          </div>
+          <div class="card-body">
+            <div class="quick-stats">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-ticket-perforated"></i>
+                </div>
+                <div class="stat-info">
+                  <h4>{{ current_user.support_tickets|length }}</h4>
+                  <p>Support Tickets</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-chat-left-dots"></i>
+                </div>
+                <div class="stat-info">
+                  <h4>Active</h4>
+                  <p>Chat Status</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="profile-card">
+          <div class="card-header">
+            <h3><i class="bi bi-activity"></i> Recent Activity</h3>
+          </div>
+          <div class="card-body recent-activities-card-body">
+            <div class="activity-timeline">
+              {% for activity in current_user.activities %}
+              <div class="timeline-item">
+                <div class="timeline-icon">
+                  <i class="{{activity.icon}}"></i>
+                </div>
+                <div class="timeline-content">
+                  <h4>{{activity.action}}</h4>
+                  <p>{{activity.description}}</p>
+                  <span class="timeline-date">{{activity.timestamp | elapsed}}</span>
+                </div>
+              </div>
+              {% endfor %}
+              {% if not current_user.activities | length %}
+              <div class="timeline-item">
+                <div class="timeline-icon">
+                  <i class="bi bi-person-check"></i>
+                </div>
+                <div class="timeline-content">
+                  <h4>No Activity</h4>
+                  <p>You have not done any activity</p>
+                  <span class="timeline-date">---</span>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Account Security -->
+        <div class="profile-card">
+          <div class="card-header">
+            <h3><i class="bi bi-shield-lock"></i> Account Security</h3>
+          </div>
+          <div class="card-body">
+            <div class="security-items">
+              <div class="security-item">
+                <i class="bi bi-shield-check"></i>
+                <span>Password Protection</span>
+                <span class="security-status secure">Secure</span>
+              </div>
+              <div class="security-item">
+                <i class="bi bi-envelope-check"></i>
+                <span>Email Verification</span>
+                <span class="security-status verified">Verified</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+
+</style>
+
+<script src="{{url_for('static',filename='js/profile.js')}}"></script>
+{% endblock %}

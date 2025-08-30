@@ -1,0 +1,120 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+	<div class="container">
+		<a class="navbar-brand d-flex align-items-center" href="{{ url_for('routes.index') }}">
+			<img
+				src="{{ url_for('static', filename='images/ptu-logo.png') }}"
+				alt="PTU Logo"
+				class="navbar-logo me-2" />
+			IKGPTU STUDENT SUPPORT
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				{% if current_user.is_authenticated %}
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('routes.dashboard') }}">
+						<i class="bi bi-speedometer2"></i> Dashboard
+					</a>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link {% if request.endpoint == 'notices' %}active{% endif %}"
+						href="{{ url_for('routes.notices') }}">
+						<i class="bi bi-bell-fill me-2"></i>
+						Notices
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('chatbot.chat') }}">
+						<i class="bi bi-chat-dots-fill"></i> Chat Support
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('routes.profile') }}">
+						<i class="bi bi-person"></i> Profile
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('routes.support_tickets') }}">
+						<i class="bi bi-envelope"></i> Queries
+					</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a
+						class="nav-link dropdown-toggle profile-dropdown"
+						href="#"
+						id="navbarDropdown"
+						role="button"
+						data-bs-toggle="dropdown"
+						aria-expanded="false">
+						<div class="profile-pic">
+							<img
+								src="{{ current_user.get_profile_photo_url() or 'https://ui-avatars.com/api/?name=' + current_user.username + '&background=random' }}"
+								alt="Profile"
+								class="profile-img" />
+							<span class="status-dot"></span>
+						</div>
+						<span class="username">{{ current_user.username }}</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-end profile-menu" aria-labelledby="navbarDropdown">
+						<div class="profile-header">
+							<div class="profile-info">
+								<img
+									src="{{ current_user.get_profile_photo_url() or 'https://ui-avatars.com/api/?name=' + current_user.username + '&background=random' }}"
+									alt="Profile"
+									class="profile-img-large" />
+								<div class="user-details">
+									<h6 class="mb-0">{{ current_user.full_name }}</h6>
+									<p class="text-white mb-0">
+										{{ current_user.course }} - Sem {{ current_user.semester }}
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="profile-stats">
+							<div class="stat-item">
+								<i class="fas fa-book"></i>
+								<span>Semester {{ current_user.semester }}</span>
+							</div>
+							<div class="stat-item">
+								<i class="fas fa-id-card"></i>
+								<span>{{ current_user.enrollment_number }}</span>
+							</div>
+						</div>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{ url_for('routes.dashboard') }}">
+							<i class="fas fa-home"></i> Dashboard
+						</a>
+						<a class="dropdown-item" href="{{ url_for('routes.profile') }}">
+							<i class="fas fa-user"></i> My Profile
+						</a>
+						<a class="dropdown-item" href="{{ url_for('routes.support_tickets') }}">
+							<i class="fas fa-ticket-alt"></i> Support Tickets
+						</a>
+						<a class="dropdown-item" href="{{ url_for('chatbot.chat') }}">
+							<i class="fas fa-comments"></i> Chat Support
+						</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
+							<i class="fas fa-sign-out-alt"></i> Logout
+						</a>
+					</div>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('auth.login') }}">
+						<i class="bi bi-box-arrow-in-right"></i> Login
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('auth.register') }}">
+						<i class="bi bi-person-plus"></i> Register
+					</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>

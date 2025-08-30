@@ -1,0 +1,241 @@
+{% extends "base.html" %} {% block title %}Queries - IKG PTU Student Support{% endblock %} {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/suppot_tickets.css') }}" />
+{% endblock %} {% block content %}
+<div class="container-fluid mt-4 content-block">
+	<div class="row">
+		<div class="col-md-3 col-lg-2">
+			<div class="card sidebar-card">
+				<div class="card-body p-0">
+					<button class="btn btn-primary w-100 mb-3 compose-btn" data-bs-toggle="modal" data-bs-target="#composeModal">
+						<i class="bi bi-plus-lg me-2"></i> New Query
+					</button>
+					<div class="list-group list-group-flush nav-menu">
+
+						{% for curr_view, view_icon in zipped_views %}
+						<a href="{{ url_for('routes.support_tickets', view=curr_view) }}"
+							class="list-group-item list-group-item-action {% if view == curr_view %} active {% endif %}"
+							data-view=curr_view>
+							<i class="bi bi-{{view_icon}}"></i> {{curr_view|capitalize}}
+							<span class="badge bg-primary rounded-pill float-end">{% if view == curr_view %} {{tickets | length}}{%
+								endif %}</span>
+						</a>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-9 col-lg-10">
+			<div class="card main-card">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<div class="d-flex align-items-center">
+						<div class="form-check me-3">
+							<input class="form-check-input" type="checkbox" id="selectAll" />
+						</div>
+						<h5 class="mb-0 d-flex align-items-center" id="currentViewTitle">
+							<i class="bi bi-inbox-fill me-2"></i> Inbox
+						</h5>
+					</div>
+					<div class="action-buttons">
+						<button class="btn btn-light btn-sm action-btn" id="refreshBtn" title="Refresh">
+							<i class="bi bi-arrow-clockwise"></i>
+						</button>
+						<button class="btn btn-light btn-sm action-btn" id="archiveSelectedBtn" disabled title="Archive">
+							<i class="bi bi-archive-fill"></i>
+						</button>
+						<button class="btn btn-light btn-sm action-btn" id="deleteSelectedBtn" disabled title="Delete">
+							<i class="bi bi-trash-fill"></i>
+						</button>
+						<div class="btn-group">
+							<button class="btn btn-light btn-sm action-btn dropdown-toggle" data-bs-toggle="dropdown">
+								<i class="bi bi-three-dots-vertical"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end action-menu-list">
+								<li>
+									<a class="dropdown-item" href="#"><i class="bi bi-check2-all me-2"></i>Mark all as read</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="#"><i class="bi bi-sort-down me-2"></i>Sort by date</a>
+								</li>
+								<li>
+									<hr class="dropdown-divider" />
+								</li>
+								<li>
+									<a class="dropdown-item" href="#"><i class="bi bi-filter me-2"></i>Filter queries</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="card-body p-0 query-list">
+					<div id="{{view}}View" class="query-view active">
+						{% if tickets %}
+						<div class="list-group list-group-flush" id="queryList">
+							{% for ticket in tickets %}
+							<div class="list-group-item list-group-item-action query-item" data-id="{{ ticket.id }}"
+								data-status="{{ ticket.status }}" data-date="{{ ticket.created_at.strftime('%Y-%m-%d') }}">
+								<div class="d-flex w-100 justify-content-between align-items-center">
+									<div class="d-flex align-items-center flex-grow-1">
+										<div class="form-check me-3">
+											<input class="form-check-input query-checkbox" type="checkbox" name="checkbox"
+												value="{{ ticket.id }}" />
+										</div>
+										<div class="query-content">
+											<div class="d-flex align-items-center mb-1">
+												<h6 class="mb-0 query-subject">{{ ticket.subject }}</h6>
+												<span
+													class="badge status-badge {% if ticket.status == 'Open' %}badge-warning{% elif ticket.status == 'In Progress' %}badge-info{% else %}badge-success{% endif %} ms-2">
+													{{ ticket.status }}
+												</span>
+											</div>
+											<p class="mb-0 text-muted small query-preview">
+												{{ ticket.message[:100] }}...
+											</p>
+										</div>
+									</div>
+									<div class="query-meta d-flex align-items-center">
+										<div class="query-actions me-3">
+											<button class="btn btn-link action-icon star-btn" data-id="{{ ticket.id }}" title="{% if ticket.starred %} Unstar {% else %} Star {% endif %}">
+												<i class="bi {% if ticket.starred %} bi-star-fill {% else %} bi-star {% endif %}"></i>
+											</button>
+											<button class="btn btn-link action-icon archive-btn" data-id="{{ ticket.id }}" title="{% if ticket.archived %} Unachive {% else %} Archive {% endif %}">
+												<i class="bi bi-archive"></i>
+											</button>
+											<button class="btn btn-link action-icon delete-btn" data-id="{{ ticket.id }}" title="{% if ticket.deleted %} Permanentaly Delete {% else %} Delete {% endif %}">
+												<i class="bi bi-trash"></i>
+											</button>
+											{% if view == "trash" %}
+											<button class="btn btn-link action-icon restore-btn" data-id="{{ ticket.id }}" title="Restore">
+												<i class="bi bi-arrow-counterclockwise"></i>
+											</button>
+											{% endif %}
+										</div>
+										<div class="query-date">
+											<small class="text-muted">{{ ticket.created_at.strftime('%b %d, %Y') }}</small>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+						{% else %}
+						{% if view == "inbox" %}
+						<div class="empty-state">
+							<div class="empty-state-icon">
+								<i class="bi bi-inbox"></i>
+							</div>
+							<h4>No Queries Yet</h4>
+							<p class="text-muted">Create your first query by clicking the "New Query" button.</p>
+							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#composeModal">
+								<i class="bi bi-plus-lg me-2"></i> New Query
+							</button>
+						</div>
+						{% else %}
+						<div class="text-center py-5">
+							<p class="mt-3 text-dark">Nothing is Here!</p>
+						</div>
+					</div>
+					{% endif %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<!-- Compose Modal -->
+<div class="modal fade" id="composeModal" tabindex="-1">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>New Query</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+			<div class="modal-body">
+				<form method="POST" action="{{ url_for('routes.support_tickets') }}" id="composeForm">
+					{{ form.hidden_tag() }}
+					<input type="hidden" name="action" value="create" />
+					<div class="mb-3">
+						<label for="subject" class="form-label">Subject</label>
+						<input type="text" class="form-control" id="subject" name="subject" required
+							placeholder="Enter query subject" />
+					</div>
+					<div class="mb-3">
+						<label for="message" class="form-label">Message</label>
+						<div class="compose-editor">
+							<div class="compose-toolbar">
+								<button type="button" class="btn btn-sm btn-light" title="Bold">
+									<i class="bi bi-type-bold"></i>
+								</button>
+								<button type="button" class="btn btn-sm btn-light" title="Italic">
+									<i class="bi bi-type-italic"></i>
+								</button>
+								<button type="button" class="btn btn-sm btn-light" title="Bullet List">
+									<i class="bi bi-list-ul"></i>
+								</button>
+								<button type="button" class="btn btn-sm btn-light" title="Add Link">
+									<i class="bi bi-link-45deg"></i>
+								</button>
+								<button type="button" class="btn btn-sm btn-light" title="Attach File">
+									<i class="bi bi-paperclip"></i>
+								</button>
+							</div>
+							<textarea class="form-control compose-textarea" id="message" name="message" rows="8" required
+								placeholder="Type your message here..."></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light" data-bs-dismiss="modal">
+							<i class="bi bi-x-lg me-2"></i>Cancel
+						</button>
+						<button type="submit" class="btn btn-primary send-btn">
+							<i class="bi bi-send-fill me-2"></i>Send Query
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- View Query Modal -->
+<div class="modal fade" id="viewQueryModal" tabindex="-1">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="viewQuerySubject"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+			<div class="modal-body">
+				<div class="query-meta mb-3">
+					<div class="d-flex justify-content-between">
+						<div>
+							<span class="badge bg-primary me-2" id="viewQueryStatus"></span>
+							<small class="text-muted" id="viewQueryDate"></small>
+						</div>
+						<div>
+							<button class="btn btn-sm btn-outline-primary me-2" id="replyBtn">
+								<i class="bi bi-reply"></i> Reply
+							</button>
+							<button class="btn btn-sm btn-outline-secondary me-2" id="archiveQueryBtn">
+								<i class="bi bi-archive"></i> Archive
+							</button>
+							<button class="btn btn-sm btn-outline-danger" id="deleteQueryBtn">
+								<i class="bi bi-trash"></i> Delete
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="query-content p-3 bg-light rounded" id="viewQueryContent"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="{{url_for('static',filename='js/support_tickets.js')}}"></script>
+<script>
+	let currentView = "{{ view }}";
+	let isTrashView = currentView == "trash";
+</script>
+
+{% endblock %}

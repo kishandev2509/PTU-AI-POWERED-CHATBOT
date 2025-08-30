@@ -1,4 +1,5 @@
-🧠 PTU-AI-POWERED-CHATBOT
+# 🧠 PTU-AI-POWERED-CHATBOT
+
 🎓 Project Description
 PTU-AI-POWERED-CHATBOT is an AI-driven student support assistant developed for IKGPTU students. This chatbot is capable of answering university-related queries through text and voice inputs. It also supports live chat, email notifications, and provides quick access to resources like the syllabus and fee structure.
 
@@ -22,14 +23,16 @@ Frontend: HTML, CSS, JavaScript
 
 Backend: Flask
 
-Machine Learning: NLP with LLM 
+Machine Learning: NLP with LLM
 
-Database: SQLlite 
+Database: SQLlite
 
 Email Service: SMTP
 
 ## 📊 Dashboard Preview
-![Dashboard Screenshot](website%20ui.jpg)
+
+![Dashboard Screenshot](repo/website%20ui.jpg)
 
 ## 📊 Chatbot Dashboard Preview
-![Dashboard Screenshot](chatbot1.jpg)
+
+![Dashboard Screenshot](repo/chatbot1.jpg)

@@ -1,0 +1,110 @@
+{% extends "base.html" %} {% block title %}ChatBot Support{% endblock %} {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}" />
+{% endblock %} {% block content %}
+<div class="app-container">
+	<header class="d-flex flex-column app-header">
+		<div class="header-buttons">
+			<button class="header-btn" id="quick-links-toggle"><i class="fas fa-bolt"></i> Quick Links</button>
+			<button class="header-btn" id="new-chat-btn"><i class="fas fa-plus"></i> New Chat</button>
+			<button class="header-btn" id="history-toggle-btn"><i class="fas fa-history"></i> History</button>
+		</div>
+		<div>
+		<img src="{{ url_for('static', filename='images/ptu-logo.png') }}" alt="PTU Logo" class="logo" />
+		<h1>IKGPTU STUDENT SUPPORT</h1>
+		</div>
+	</header>
+	<div class="d-flex flex-column chat-box">
+		<div class="chat-container" id="chat-container">
+			<div id="chat-messages" class="chat-messages"></div>
+			<div class="typing-indicator" id="typing-indicator">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+		</div>
+		<div class="input-area">
+			<div class="input-container">
+				<button id="voice-btn" class="voice-btn" title="Voice Input">
+					<i class="fas fa-microphone"></i>
+				</button>
+				<input type="text" id="user-input" placeholder="Type your question here..." autocomplete="off" />
+				<button id="send-btn" class="send-btn" title="Send Message">
+					<i class="fas fa-paper-plane"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="live-support-btn">
+		<button id="live-support"><i class="fas fa-headset"></i> Live Support</button>
+	</div>
+</div>
+
+<div class="live-support-modal" id="live-support-modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3>
+				<img src="{{ url_for('static', filename='images/ptu-logo.png') }}" alt="PTU Logo" class="modal-logo" />
+				IKGPTU Live Support
+			</h3>
+			<button id="close-modal"><i class="fas fa-times"></i></button>
+		</div>
+		<form id="support-form">
+			{{ form.hidden_tag() }}
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="text" id="name" required />
+			</div>
+			<div class="form-group">
+				<label for="email">Email</label>
+				<input type="email" id="email" required />
+			</div>
+			<div class="form-group">
+				<label for="query">Message</label>
+				<textarea id="query" rows="4" required></textarea>
+			</div>
+			<button type="submit" class="submit-btn">Send Message</button>
+		</form>
+	</div>
+</div>
+
+<!-- Chat History Sidebar -->
+<div class="chat-history-sidebar" id="chat-history-sidebar">
+	<div class="history-header">
+		<h3>Chat History</h3>
+		<button class="history-close-btn" id="history-close-btn">
+			<i class="fas fa-times"></i>
+		</button>
+	</div>
+	<div class="chat-history-list" id="chat-history-list">
+		<!-- Chat history items will be added here dynamically -->
+	</div>
+</div>
+
+<!-- Quick Links Sidebar -->
+<div class="quick-links-sidebar" id="quick-links-sidebar">
+	<div class="sidebar-header">
+		<h3>Quick Links</h3>
+		<button class="close-sidebar-btn" id="close-sidebar">
+			<i class="fas fa-times"></i>
+		</button>
+	</div>
+	<div class="categories">
+		{% for category in categories %}
+		<div class="category">
+			<h4><i class="{{category.icon}}"> {{category.name}}</i></h4>
+		</div>
+		<ul>
+			{% for title,question in category.questions.items() %}
+			<li><a href="£" class="quick-query" data-query="{{question}}">{{title}}</a></li>
+			{% endfor %}
+		</ul>
+		{% endfor %}
+	</div>
+</div>
+<script>
+  const send_support_email_url = "{{ url_for('chatbot.send_support_email') }}";
+</script>
+<script src="{{url_for('static',filename='js/chat.js')}}"></script>
+
+{% endblock %}

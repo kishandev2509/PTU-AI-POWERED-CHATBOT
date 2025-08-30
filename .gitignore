@@ -15,13 +15,6 @@ env/
 # Models and checkpoints
 *.h5
 *.pth
-*.pkl
-
-# Data
-dataset/
-data/
-*.xlsx
-*.csv
 
 # Git settings
 .git/
@@ -30,3 +23,12 @@ data/
 # System files
 .DS_Store
 Thumbs.db
+
+# logs
+logs/
+
+# environment file
+.env
+
+# models
+models/

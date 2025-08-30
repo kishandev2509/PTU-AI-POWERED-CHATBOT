@@ -1,0 +1,168 @@
+{% extends "base.html" %}{% block title %}Register{% endblock %} {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}" />
+{% endblock %} {% block content %}
+<div class="page-wrapper">
+	<div class="main-content">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+					<div class="welcome-section text-center mb-4">
+						<div class="logo-wrapper">
+							<img src="{{ url_for('static', filename='images/ptu-logo.png') }}" alt="PTU Logo"
+								class="welcome-logo mb-3">
+							<div class="logo-glow"></div>
+						</div>
+						<h2 class="welcome-title">Join PTU Student Support</h2>
+						<p class="welcome-text">Create your account to access personalized academic support, instant query
+							resolution, and stay updated with important announcements. Your academic journey starts here!</p>
+					</div>
+					<div class="card register-card">
+						<div class="card-header">
+							<h3 class="text-center mb-0"><i class="bi bi-person-plus"></i> Register</h3>
+						</div>
+						<div class="card-body">
+							{% with messages = get_flashed_messages(with_categories=true) %}
+							{% if messages %}
+							{% for category, message in messages %}
+							<div class="alert alert-{{ category }} alert-dismissible fade show error-message">
+								<div class="error-icon">
+									<i class="bi bi-exclamation-circle"></i>
+								</div>
+								<div class="error-text">{{ message }}</div>
+								<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+							</div>
+							{% endfor %}
+							{% endif %}
+							{% endwith %}
+							<form method="POST" action="{{ url_for('auth.register') }}" class="animated-form">
+								{{ form.hidden_tag() }}
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group mb-3">
+											<label for="username" class="form-label">
+												<i class="bi bi-person"></i> Username
+											</label>
+											<div class="input-group">
+												<input type="text" class="form-control" id="username" name="username" autocomplete="username"
+													required>
+												<span class="input-focus-effect"></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group mb-3">
+											<label for="email" class="form-label">
+												<i class="bi bi-envelope"></i> Email
+											</label>
+											<div class="input-group">
+												<input type="email" class="form-control" id="email" name="email" autocomplete="email" required>
+												<span class="input-focus-effect"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group mb-3">
+											<label for="enrollment_number" class="form-label">
+												<i class="bi bi-123"></i> Enrollment Number
+											</label>
+											<div class="input-group">
+												<input type="text" class="form-control" id="enrollment_number" name="enrollment_number"
+													required>
+												<span class="input-focus-effect"></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group mb-3">
+											<label for="full_name" class="form-label">
+												<i class="bi bi-person-badge"></i> Full Name
+											</label>
+											<div class="input-group">
+												<input type="text" class="form-control" id="full_name" name="full_name" required>
+												<span class="input-focus-effect"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group mb-3">
+											<label for="course" class="form-label">
+												<i class="bi bi-book"></i> Course
+											</label>
+											<div class="input-group">
+												<select class="form-select" id="course" name="course" required>
+													<option value="">Select Course</option>
+													<option value="B.Tech">B.Tech</option>
+													<option value="M.Tech">M.Tech</option>
+													<option value="BCA">BCA</option>
+													<option value="MCA">MCA</option>
+												</select>
+												<span class="input-focus-effect"></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group mb-3">
+											<label for="semester" class="form-label">
+												<i class="bi bi-calendar"></i> Semester
+											</label>
+											<div class="input-group">
+												<select class="form-select" id="semester" name="semester" required>
+													<option value="">Select Semester</option>
+													{% for i in range(1, 9) %}
+													<option value="{{ i }}">Semester {{ i }}</option>
+													{% endfor %}
+												</select>
+												<span class="input-focus-effect"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group mb-3">
+											<label for="password" class="form-label">
+												<i class="bi bi-lock"></i> Password
+											</label>
+											<div class="input-group">
+												<input type="password" class="form-control" id="password" name="password"
+													autocomplete="new-password" required>
+												<span class="input-focus-effect"></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group mb-3">
+											<label for="confirm_password" class="form-label">
+												<i class="bi bi-lock"></i> Confirm Password
+											</label>
+											<div class="input-group">
+												<input type="password" class="form-control" id="confirm_password" name="confirm_password"
+													autocomplete="new-password" required>
+												<span class="input-focus-effect"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="d-grid">
+									<button type="submit" class="btn btn-primary btn-glow">
+										<i class="bi bi-person-plus"></i> Register
+										<span class="btn-effect"></span>
+									</button>
+								</div>
+							</form>
+							<div class="text-center mt-4">
+								<p class="login-text">Already have an account? <a href="{{ url_for('auth.login') }}"
+										class="text-decoration-none link-effect">Login</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
