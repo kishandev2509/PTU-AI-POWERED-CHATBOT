@@ -92,5 +92,5 @@ def send_support_email():
     body = f"Name: {name}\nEmail: {email}\nQuery: {query}"
 
     subject = f"Support Request from {name}"
-    msg = send_email_to_support(subject, body)
+    msg = send_email_to_support(subject, body, current_user.email)
     return jsonify(msg)
