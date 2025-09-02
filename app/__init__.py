@@ -64,7 +64,7 @@ def create_app(basedir):
     login_manager.login_view = "auth.login"
     with app.app_context():
         db.create_all()
-        # reset_db(app,db)
+        reset_db(app,db)
         register_utils(app)
         fetch_ptu_notices()
         start_scheduler()
