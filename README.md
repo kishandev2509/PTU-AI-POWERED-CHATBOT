@@ -115,7 +115,7 @@ pip install uv
 
 ## 🙏 Credits
 
-This chatbot was inspired by and builds upon prior work from the GitHub community. Original concept and base reference: **[Vanshika Sharma](https://github.com/Vanshika1007) , Vikas Kumar**. Full credit to the original author for their contribution and inspiration.
+This chatbot was inspired by and builds upon prior work from the GitHub community. Original concept and base reference: **[Vanshika Sharma](https://github.com/Vanshika1007) , [Vikas Kumar](https://github.com/vikas07-vk)**. Full credit to the original author for their contribution and inspiration.
 
 ---
 
