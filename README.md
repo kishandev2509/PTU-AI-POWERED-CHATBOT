@@ -36,3 +36,9 @@ Email Service: SMTP
 ## 📊 Chatbot Dashboard Preview
 
 ![Dashboard Screenshot](repo/chatbot1.jpg)
+
+
+## Credits:
+
+1. [Vanshika Sharma](https://github.com/Vanshika1007)
+2. Vikas Kumar
