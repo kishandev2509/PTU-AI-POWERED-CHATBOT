@@ -129,7 +129,7 @@ function addMessage(type, text) {
 
 	const textDiv = document.createElement("div");
 	textDiv.className = "message-text";
-	textDiv.textContent = text;
+	textDiv.innerHTML = text;
 	content.appendChild(textDiv);
 
 	messageDiv.appendChild(content);
